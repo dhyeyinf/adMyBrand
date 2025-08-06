@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { EnhancedCard } from "@/components/EnhancedCard";
@@ -13,7 +14,7 @@ import { LoadingSkeleton } from "@/components/LoadingSkeleton";
 import { useToast } from "@/components/ui/use-toast";
 import { chartData, tableData } from "@/lib/data";
 
-type MetricStatus = "good" | "warning" | "bad";
+type MetricStatus = "good" | "warning" | "danger";
 type Metric = {
   title: string;
   value: string;
@@ -40,7 +41,6 @@ type RealTime = {
 
 export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
-  // Use type RealTime | null for realTimeData
   const [realTimeData, setRealTimeData] = useState<RealTime | null>(null);
   const { toast } = useToast();
 
@@ -88,7 +88,6 @@ export default function Dashboard() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Use Filters type for filters parameter
   const handleFiltersChange = (filters: Filters) => {
     toast({
       title: "Filters Applied",
@@ -116,7 +115,6 @@ export default function Dashboard() {
     });
   };
 
-  // Use RealTime type for data
   const handleRealTimeUpdate = (data: RealTime) => {
     setRealTimeData(data);
     setMetrics((prev) =>
