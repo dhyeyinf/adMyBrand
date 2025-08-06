@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { EnhancedCard } from "@/components/EnhancedCard";
@@ -14,13 +13,38 @@ import { LoadingSkeleton } from "@/components/LoadingSkeleton";
 import { useToast } from "@/components/ui/use-toast";
 import { chartData, tableData } from "@/lib/data";
 
+type MetricStatus = "good" | "warning" | "bad";
+type Metric = {
+  title: string;
+  value: string;
+  change: number;
+  icon: string;
+  trend: number[];
+  comparison: string;
+  status: MetricStatus;
+};
+
+type Filters = {
+  dateRange: string;
+  campaign: string;
+  status: string;
+  search: string;
+};
+
+type RealTime = {
+  metrics: {
+    revenue: number;
+    growth: number;
+  };
+};
+
 export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
-  const [realTimeData, setRealTimeData] = useState(null);
+  // Use type RealTime | null for realTimeData
+  const [realTimeData, setRealTimeData] = useState<RealTime | null>(null);
   const { toast } = useToast();
 
-  // Enhanced metrics with more data
-  const [metrics, setMetrics] = useState([
+  const [metrics, setMetrics] = useState<Metric[]>([
     {
       title: "Total Revenue",
       value: "$54,239",
@@ -28,7 +52,7 @@ export default function Dashboard() {
       icon: "💰",
       trend: [20, 35, 28, 45, 38, 52, 48],
       comparison: "vs. last month",
-      status: "good" as const
+      status: "good",
     },
     {
       title: "Active Users",
@@ -37,7 +61,7 @@ export default function Dashboard() {
       icon: "👥",
       trend: [15, 25, 20, 30, 28, 35, 32],
       comparison: "+2,341 new users",
-      status: "good" as const
+      status: "good",
     },
     {
       title: "Conversions",
@@ -46,7 +70,7 @@ export default function Dashboard() {
       icon: "📈",
       trend: [40, 35, 38, 30, 32, 28, 25],
       comparison: "Below target by 5%",
-      status: "warning" as const
+      status: "warning",
     },
     {
       title: "CTR",
@@ -55,8 +79,8 @@ export default function Dashboard() {
       icon: "🎯",
       trend: [10, 15, 12, 18, 20, 25, 23],
       comparison: "Industry avg: 3.2%",
-      status: "good" as const
-    }
+      status: "good",
+    },
   ]);
 
   useEffect(() => {
@@ -64,20 +88,19 @@ export default function Dashboard() {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleFiltersChange = (filters: any) => {
+  // Use Filters type for filters parameter
+  const handleFiltersChange = (filters: Filters) => {
     toast({
       title: "Filters Applied",
-      description: `Data filtered by ${filters.dateRange} period`,
+      description: `Data filtered by ${filters.dateRange} period.`,
     });
   };
 
-  const handleExport = (format: 'csv' | 'pdf') => {
+  const handleExport = (format: "csv" | "pdf") => {
     toast({
-      title: `Export Started`,
+      title: "Export Started",
       description: `Your ${format.toUpperCase()} export is being prepared...`,
     });
-
-    // Simulate export process
     setTimeout(() => {
       toast({
         title: "Export Complete",
@@ -93,18 +116,20 @@ export default function Dashboard() {
     });
   };
 
-  const handleRealTimeUpdate = (data: any) => {
+  // Use RealTime type for data
+  const handleRealTimeUpdate = (data: RealTime) => {
     setRealTimeData(data);
-    // Update metrics with real-time data
-    setMetrics(prev => prev.map(metric => ({
-      ...metric,
-      value: metric.title === "Total Revenue" 
-        ? `$${data.metrics.revenue.toLocaleString()}` 
-        : metric.value,
-      change: metric.title === "Total Revenue" 
-        ? data.metrics.growth 
-        : metric.change
-    })));
+    setMetrics((prev) =>
+      prev.map((metric) =>
+        metric.title === "Total Revenue"
+          ? {
+              ...metric,
+              value: `$${data.metrics.revenue.toLocaleString()}`,
+              change: data.metrics.growth,
+            }
+          : metric
+      )
+    );
   };
 
   if (isLoading) return <LoadingSkeleton />;
@@ -114,7 +139,7 @@ export default function Dashboard() {
       {/* Header with Real-time Status and Quick Actions */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
-          <motion.h1 
+          <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent"
@@ -125,14 +150,12 @@ export default function Dashboard() {
         </div>
         <QuickActions />
       </div>
-
       {/* Advanced Filters */}
-      <AdvancedFilters 
+      <AdvancedFilters
         onFiltersChange={handleFiltersChange}
         onExport={handleExport}
         onRefresh={handleRefresh}
       />
-
       {/* Enhanced Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {metrics.map((metric, index) => (
@@ -146,7 +169,6 @@ export default function Dashboard() {
           </motion.div>
         ))}
       </div>
-
       {/* Charts and Insights Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
@@ -167,7 +189,6 @@ export default function Dashboard() {
               <Chart type="bar" data={chartData.bar} title="Daily Clicks" />
             </motion.div>
           </div>
-          
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -176,7 +197,6 @@ export default function Dashboard() {
             <Chart type="pie" data={chartData.pie} title="Traffic Sources" />
           </motion.div>
         </div>
-
         {/* Right Sidebar with Insights and Comparison */}
         <div className="space-y-6">
           <motion.div
@@ -186,7 +206,6 @@ export default function Dashboard() {
           >
             <AnalyticsInsights />
           </motion.div>
-          
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -196,7 +215,6 @@ export default function Dashboard() {
           </motion.div>
         </div>
       </div>
-
       {/* Enhanced Data Table */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}

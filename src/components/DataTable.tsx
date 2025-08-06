@@ -1,4 +1,6 @@
 // src/components/DataTable.tsx
+
+import React, { useState } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -6,22 +8,31 @@ import {
   getSortedRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
+  SortingState,
+  ColumnDef,
 } from "@tanstack/react-table";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
 import { Download } from "lucide-react";
 
+export type CampaignRow = {
+  campaign: string;
+  impressions: number;
+  clicks: number;
+  conversions: number;
+  revenue: number;
+};
+
 interface DataTableProps {
-  data: any[];
+  data: CampaignRow[];
 }
 
 export function DataTable({ data }: DataTableProps) {
-  const [sorting, setSorting] = useState<SortingState>([]); // Explicitly type as SortingState
+  const [sorting, setSorting] = useState<SortingState>([]);
   const [filtering, setFiltering] = useState("");
 
-  const columns = [
+  const columns: ColumnDef<CampaignRow, any>[] = [
     { accessorKey: "campaign", header: "Campaign" },
     { accessorKey: "impressions", header: "Impressions" },
     { accessorKey: "clicks", header: "Clicks" },
@@ -37,11 +48,12 @@ export function DataTable({ data }: DataTableProps) {
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     state: { sorting, globalFilter: filtering },
-    onSortingChange: setSorting, // This should now work with the correct type
+    onSortingChange: setSorting,
     onGlobalFilterChange: setFiltering,
   });
 
-  function exportToCSV(data: any[], filename: string) {
+  function exportToCSV(data: CampaignRow[], filename: string) {
+    if (data.length === 0) return;
     const headers = Object.keys(data[0]).join(",");
     const rows = data.map((row) => Object.values(row).join(",")).join("\n");
     const csv = `${headers}\n${rows}`;

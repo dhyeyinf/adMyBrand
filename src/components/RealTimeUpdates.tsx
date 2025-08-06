@@ -5,8 +5,19 @@ import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Wifi, WifiOff } from "lucide-react";
 
+// Describe the live update data shape
+export type RealTimeUpdate = {
+  timestamp: Date;
+  metrics: {
+    revenue: number;
+    users: number;
+    conversions: number;
+    growth: number;
+  };
+};
+
 interface RealTimeUpdatesProps {
-  onDataUpdate: (data: any) => void;
+  onDataUpdate: (data: RealTimeUpdate) => void;
 }
 
 export function RealTimeUpdates({ onDataUpdate }: RealTimeUpdatesProps) {
@@ -15,8 +26,7 @@ export function RealTimeUpdates({ onDataUpdate }: RealTimeUpdatesProps) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // Simulate real-time data updates
-      const mockUpdate = {
+      const mockUpdate: RealTimeUpdate = {
         timestamp: new Date(),
         metrics: {
           revenue: Math.floor(Math.random() * 1000) + 50000,
@@ -28,10 +38,8 @@ export function RealTimeUpdates({ onDataUpdate }: RealTimeUpdatesProps) {
 
       setLastUpdate(new Date());
       onDataUpdate(mockUpdate);
-
-      // Simulate occasional connection issues
       setIsConnected(Math.random() > 0.05);
-    }, 5000); // Update every 5 seconds
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [onDataUpdate]);
@@ -52,9 +60,7 @@ export function RealTimeUpdates({ onDataUpdate }: RealTimeUpdatesProps) {
           {isConnected ? "Live" : "Offline"}
         </Badge>
       </div>
-      <span>
-        Last update: {lastUpdate.toLocaleTimeString()}
-      </span>
+      <span>Last update: {lastUpdate.toLocaleTimeString()}</span>
     </motion.div>
   );
 }
