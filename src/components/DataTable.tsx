@@ -32,7 +32,7 @@ export function DataTable({ data }: DataTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filtering, setFiltering] = useState("");
 
-  const columns: ColumnDef<CampaignRow, any>[] = [
+  const columns: ColumnDef<CampaignRow, unknown>[] = [
     { accessorKey: "campaign", header: "Campaign" },
     { accessorKey: "impressions", header: "Impressions" },
     { accessorKey: "clicks", header: "Clicks" },
