@@ -40,9 +40,33 @@ const campaignChartData = {
 };
 
 const campaignTableData = [
-  { id: 1, campaign: "Summer Sale", impressions: 500000, clicks: 25000, conversions: 1000, ctr: "5.0%" },
-  { id: 2, campaign: "Winter Promo", impressions: 400000, clicks: 20000, conversions: 800, ctr: "5.0%" },
-  { id: 3, campaign: "Holiday Boost", impressions: 600000, clicks: 30000, conversions: 1400, ctr: "5.0%" },
+  {
+    id: 1,
+    campaign: "Summer Sale",
+    impressions: 500000,
+    clicks: 25000,
+    conversions: 1000,
+    revenue: 12345, // <-- Added revenue property
+    ctr: "5.0%",
+  },
+  {
+    id: 2,
+    campaign: "Winter Promo",
+    impressions: 400000,
+    clicks: 20000,
+    conversions: 800,
+    revenue: 10250, // <-- Added revenue property
+    ctr: "5.0%",
+  },
+  {
+    id: 3,
+    campaign: "Holiday Boost",
+    impressions: 600000,
+    clicks: 30000,
+    conversions: 1400,
+    revenue: 15700, // <-- Added revenue property
+    ctr: "5.0%",
+  },
 ];
 
 export default function Campaigns() {
