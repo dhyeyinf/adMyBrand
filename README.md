@@ -95,7 +95,12 @@ src/
 │   │   ├── card.tsx
 │   │   ├── input.tsx
 │   │   ├── select.tsx
-│   │   └── ...
+│   │   ├── skeleton.tsx
+│   │   ├── table.tsx
+│   │   ├── theme-provider.tsx
+│   │   ├── toast.tsx
+│   │   ├── toaster.tsx
+│   │   └── use-toast.ts
 │   ├── AdvancedFilters.tsx    # Advanced filtering system
 │   ├── AnalyticsInsights.tsx  # AI-powered insights
 │   ├── Card.tsx               # Metric cards
