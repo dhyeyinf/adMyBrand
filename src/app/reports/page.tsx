@@ -28,10 +28,32 @@ const reportChartData = {
   },
 };
 
+// Updated report table data to match CampaignRow structure
 const reportTableData = [
-  { id: 1, report: "Q1 2025 Summary", revenue: "$250K", ctr: "4.5%", downloads: 600 },
-  { id: 2, report: "Q2 2025 Summary", revenue: "$300K", ctr: "4.6%", downloads: 700 },
-  { id: 3, report: "Q3 2025 Forecast", revenue: "$280K", ctr: "4.4%", downloads: 650 },
+  {
+    id: 1,
+    campaign: "Q1 2025 Summary",
+    impressions: 125000,
+    clicks: 5625,
+    conversions: 253,
+    revenue: 250000,
+  },
+  {
+    id: 2,
+    campaign: "Q2 2025 Summary",
+    impressions: 140000,
+    clicks: 6440,
+    conversions: 290,
+    revenue: 300000,
+  },
+  {
+    id: 3,
+    campaign: "Q3 2025 Forecast",
+    impressions: 135000,
+    clicks: 5940,
+    conversions: 267,
+    revenue: 280000,
+  },
 ];
 
 export default function Reports() {
@@ -46,7 +68,9 @@ export default function Reports() {
 
   const exportToCSV = () => {
     const headers = Object.keys(reportTableData[0]).join(",");
-    const rows = reportTableData.map((row) => Object.values(row).join(",")).join("\n");
+    const rows = reportTableData
+      .map((row) => Object.values(row).join(","))
+      .join("\n");
     const csv = `${headers}\n${rows}`;
     const blob = new Blob([csv], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
@@ -75,13 +99,18 @@ export default function Reports() {
 
       {/* Charts */}
       <div className="grid grid-cols-1 gap-4">
-        <Chart type="pie" data={reportChartData.pie} title="Revenue Breakdown" />
+        <Chart
+          type="pie"
+          data={reportChartData.pie}
+          title="Revenue Breakdown"
+        />
       </div>
 
       {/* Data Table with Export */}
       <div className="space-y-4">
         <Button onClick={exportToCSV} className="flex items-center gap-2">
-          <Download className="h-4 w-4" /> Export CSV
+          <Download className="h-4 w-4" />
+          Export CSV
         </Button>
         <DataTable data={reportTableData} />
       </div>
