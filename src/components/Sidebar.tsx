@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import Image from "next/image"; // Import Image from next/image
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, BarChart2, FileText } from "lucide-react"; // Optional: for icons
 
@@ -17,7 +18,13 @@ export function Sidebar() {
   return (
     <aside className="w-64 bg-muted p-4">
       <div className="flex items-center gap-2 mb-6">
-        <img src="/logo.png" alt="ADmyBRAND" className="h-8 w-8" />
+        <Image
+          src="/logo.png"
+          alt="ADmyBRAND"
+          width={32} // Corresponds to h-8 (8 * 4px = 32px in Tailwind)
+          height={32} // Corresponds to w-8 (8 * 4px = 32px in Tailwind)
+          className="h-8 w-8"
+        />
         <h1 className="text-xl font-bold">ADmyBRAND</h1>
       </div>
       <nav className="space-y-2">

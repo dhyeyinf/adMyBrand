@@ -6,11 +6,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { 
   Play, 
   Pause, 
-  RotateCcw, 
-  Settings, 
-  Share2, 
-  BookmarkPlus,
-  Zap
+  RotateCcw,  
+  Share2
 } from "lucide-react";
 
 export function QuickActions() {

@@ -1,6 +1,5 @@
 // src/components/Navbar.tsx
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Button } from "@/components/ui/button";
 
 export function Navbar() {
   return (
