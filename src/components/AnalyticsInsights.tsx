@@ -149,6 +149,7 @@ export function AnalyticsInsights() {
                 </div>
               </div>
             </motion.div>
+      
           ))}
         </div>
       </CardContent>
